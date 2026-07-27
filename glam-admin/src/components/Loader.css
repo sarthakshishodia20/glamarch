@@ -1,0 +1,48 @@
+/* Full-page overlay — only for auth/init */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(245, 246, 250, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Inline — inside a content card, doesn't cover sidebar */
+.loader-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+  width: 100%;
+}
+
+.loader-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e0e2f0;
+  border-top-color: #3b35c3;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loader-text {
+  font-size: 13px;
+  color: #6b7280;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}

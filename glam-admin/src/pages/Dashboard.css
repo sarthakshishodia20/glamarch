@@ -1,0 +1,243 @@
+/* ── Shared page styles ── */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.page-description {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 20px;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 4px 0 0;
+  font-weight: 400;
+}
+
+/* ── Funnel grid ── */
+.funnel-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.funnel-card {
+  flex: 1;
+  min-width: 100px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.funnel-count {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3b35c3;
+}
+
+.funnel-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* ── Shared error/info banners ── */
+.error-banner {
+  font-size: 13px;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #3b35c3;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-family: inherit;
+}
+
+/* ── Shared table styles ── */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background: #f9fafb;
+}
+
+/* ── Stage badges ── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.badge-registered    { background: #e0e7ff; color: #3730a3; }
+.badge-documents_pending { background: #fef3c7; color: #92400e; }
+.badge-documents_submitted { background: #dbeafe; color: #1d4ed8; }
+.badge-bgv_pending   { background: #fce7f3; color: #9d174d; }
+.badge-bgv_cleared   { background: #d1fae5; color: #065f46; }
+.badge-onboarded     { background: #ede9fe; color: #5b21b6; }
+.badge-live          { background: #dcfce7; color: #166534; }
+.badge-triggered     { background: #fef3c7; color: #92400e; }
+.badge-in_progress   { background: #dbeafe; color: #1d4ed8; }
+.badge-cleared       { background: #d1fae5; color: #065f46; }
+.badge-rejected      { background: #fee2e2; color: #991b1b; }
+.badge-not_started   { background: #f3f4f6; color: #6b7280; }
+
+/* ── Filter bar ── */
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.filter-bar label {
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filter-bar select,
+.filter-bar input {
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.filter-bar select:focus,
+.filter-bar input:focus {
+  border-color: #3b35c3;
+}
+
+/* ── Buttons ── */
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #3b35c3;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #332eaa;
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+/* ── Pagination ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #374151;
+}
