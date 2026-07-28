@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/constants.dart';
+import 'screens/splash_screen.dart';
 import 'screens/language_selection_screen.dart';
 
 void main() {
@@ -34,8 +35,8 @@ class GlamRiderApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      // Screen 1 — Language Selection is the entry point
-      home: const LanguageSelectionScreen(),
+      // Splash screen is the entry point — auto-navigates to language selection
+      home: const SplashScreen(),
       // Named routes — will add more screens here as we build them
       routes: {
         '/language': (context) => const LanguageSelectionScreen(),
