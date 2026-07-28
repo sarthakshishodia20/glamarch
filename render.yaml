@@ -1,0 +1,52 @@
+services:
+  # ── Backend API (Node.js Web Service) ──────────────────────────────────────
+  - type: web
+    name: glam-backend
+    runtime: node
+    rootDir: .
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        sync: false          # Set manually in Render dashboard
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DB_HOST
+        sync: false          # Set manually — your MySQL host
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: glam_onboarding
+      - key: MAX_FILE_SIZE
+        value: 5242880
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false          # Set after frontend deploys: https://glam-admin.onrender.com
+
+  # ── Frontend React Admin (Static Site) ─────────────────────────────────────
+  - type: web
+    name: glam-admin
+    runtime: static
+    rootDir: glam-admin
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false          # Set after backend deploys: https://glam-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
