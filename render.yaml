@@ -48,7 +48,7 @@ services:
     staticPublishPath: build
     envVars:
       - key: REACT_APP_API_URL
-        sync: false          # Set after backend deploys: https://glam-backend.onrender.com/api
+        value: https://glam-backend-a2pc.onrender.com/api
     routes:
       - type: rewrite
         source: /*
