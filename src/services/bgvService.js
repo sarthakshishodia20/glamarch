@@ -56,9 +56,9 @@ const bgvService = {
 
     await bgvRepository.updateStatus(bgvId, bgvUpdates);
 
-    const [bgvRow] = await require('../config/db').query('SELECT * FROM tb_bgv WHERE id = ?', [bgvId]);
-    if (bgvRow && bgvRow[0]) {
-      const riderId = bgvRow[0].rider_id;
+    const bgvRow = await bgvRepository.findById(bgvId);
+    if (bgvRow) {
+      const riderId = bgvRow.rider_id;
 
       if (status === 'cleared') {
         const documentRepository = require('../repositories/documentRepository');

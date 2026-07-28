@@ -24,6 +24,14 @@ const bgvRepository = {
     return rows[0] || null;
   },
 
+  findById: async (id) => {
+    const [rows] = await pool.query(
+      'SELECT * FROM tb_bgv WHERE id = ? LIMIT 1',
+      [id]
+    );
+    return rows[0] || null;
+  },
+
   updateStatus: async (id, updates) => {
     const keys = Object.keys(updates);
     const values = Object.values(updates);

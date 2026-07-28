@@ -8,7 +8,7 @@ const { uploadLimiter } = require('../middleware/rateLimiter');
 
 const router = express.Router();
 
-router.post('/upload', authenticate, uploadLimiter, validateJoi(documentModel.upload), handleUploadError('file'), documentController.uploadDocument);
+router.post('/upload', authenticate, uploadLimiter, handleUploadError('file'), validateJoi(documentModel.upload), documentController.uploadDocument);
 router.get('/status', authenticate, documentController.getDocumentStatus);
 
 // Admin endpoints for document verification

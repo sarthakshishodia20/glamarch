@@ -56,7 +56,7 @@ const Riders = () => {
       const data = res.data.data;
       setDocsModal({ open: true, rider, loading: false, checklist: data.checklist || [] });
     } catch (err) {
-      showToast('error', err.response?.data?.message || 'Failed to fetch document checklist');
+      showToast(err.response?.data?.message || 'Failed to fetch document checklist', 'error');
       setDocsModal((prev) => ({ ...prev, loading: false }));
     }
   };
@@ -73,7 +73,7 @@ const Riders = () => {
       }
       fetchRiders();
     } catch (err) {
-      showToast('error', err.response?.data?.message || 'Failed to update document status');
+      showToast(err.response?.data?.message || 'Failed to update document status', 'error');
     }
   };
 

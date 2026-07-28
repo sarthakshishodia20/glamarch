@@ -54,7 +54,7 @@ const bulkUploadService = {
                 if (clientId) {
                   updates.selected_client_id = clientId;
                   if (existingRider.onboarding_stage === 'registered') {
-                    updates.onboarding_stage = 'bgv_pending';
+                    updates.onboarding_stage = 'documents_pending';
                   }
                 }
                 if (hubName) updates.assigned_hub_name = hubName;
@@ -77,7 +77,7 @@ const bulkUploadService = {
                 importedCount++;
               } else {
                 const riderId = randomUUID();
-                const initialStage = clientId ? 'bgv_pending' : 'registered';
+                const initialStage = clientId ? 'documents_pending' : 'registered';
                 await pool.query(
                   `INSERT INTO tb_riders (id, full_name, phone_number, gender, city, preferred_language, selected_client_id, assigned_hub_name, assigned_tl_name, assigned_tl_phone, onboarding_stage)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
