@@ -17,3 +17,19 @@
   background: #f5f6fa;
   padding: 28px 32px;
 }
+
+@media (max-width: 768px) {
+  .layout-root {
+    height: auto;
+    min-height: 100vh;
+  }
+  .layout-body {
+    flex-direction: column;
+    overflow: visible;
+  }
+  .layout-main {
+    padding: 16px 12px;
+    overflow: visible;
+  }
+}
+

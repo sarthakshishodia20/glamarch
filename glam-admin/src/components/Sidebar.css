@@ -34,3 +34,27 @@
   background: #332eaa;
   color: #fff;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 6px 8px;
+    gap: 4px;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .sidebar-link {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+}
+

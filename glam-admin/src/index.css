@@ -89,3 +89,12 @@ body {
 .inline-input:focus {
   border-color: #3b35c3;
 }
+
+@media (max-width: 600px) {
+  .modal-box {
+    margin: 16px;
+    padding: 20px 16px;
+    max-width: calc(100vw - 32px);
+  }
+}
+

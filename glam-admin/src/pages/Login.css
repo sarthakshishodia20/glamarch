@@ -97,3 +97,12 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 28px 20px;
+    margin: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+}
+
