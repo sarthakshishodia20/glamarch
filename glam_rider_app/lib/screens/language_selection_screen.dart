@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../config/constants.dart';
@@ -31,20 +32,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', _selectedCode);
     if (!mounted) return;
-    // Navigate to Screen 2 (Registration) — will uncomment when ready
-    // Navigator.pushNamed(context, '/register');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _selectedCode == 'hi'
-              ? 'भाषा सेव हो गई!'
-              : 'Language saved!',
-        ),
-        backgroundColor: AppColors.accent,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
+    Navigator.pushNamed(context, '/register');
   }
 
   @override
@@ -136,8 +124,10 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                       children: _languages.map((lang) {
                         final isSelected = _selectedCode == lang['code'];
                         return GestureDetector(
-                          onTap: () =>
-                              setState(() => _selectedCode = lang['code']!),
+                          onTap: () {
+                            HapticFeedback.selectionClick();
+                            setState(() => _selectedCode = lang['code']!);
+                          },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
                             decoration: BoxDecoration(
@@ -189,7 +179,10 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
 
                     // ── Continue Button ────────────────────────────
                     GestureDetector(
-                      onTap: _selectedCode.isEmpty ? null : _onContinue,
+                      onTap: _selectedCode.isEmpty ? null : () {
+                      HapticFeedback.mediumImpact();
+                      _onContinue();
+                    },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         width: double.infinity,

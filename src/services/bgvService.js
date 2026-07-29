@@ -61,45 +61,45 @@ const bgvService = {
       const riderId = bgvRow.rider_id;
 
       if (status === 'cleared') {
-        const documentRepository = require('../repositories/documentRepository');
-        const approvedCount = await documentRepository.countApprovedByRider(riderId);
+        const rider = await riderRepository.findById(riderId);
+        const adminName = adminUser && adminUser.name ? adminUser.name : 'Operations Admin';
 
-        if (approvedCount >= 6) {
-          const workerCode = `GLAM-WRK-${Math.floor(100000 + Math.random() * 900000)}`;
-          console.log(`[2][BGV] Worker code generate kiya - ${workerCode}, riderId: ${riderId}`);
+        const cityPrefix = rider && rider.city ? rider.city.substring(0, 3).toUpperCase() : 'DEL';
+        const workerCode = (rider && rider.glam_worker_code)
+          ? rider.glam_worker_code
+          : `FKM-${cityPrefix}-${Math.floor(100000 + Math.random() * 900000)}`;
 
-          await riderRepository.updateById(riderId, {
-            bgv_status: 'cleared',
-            onboarding_stage: 'onboarded',
-            glam_worker_code: workerCode,
-          });
+        const hubName = (rider && rider.assigned_hub_name)
+          ? rider.assigned_hub_name
+          : `${rider?.city || 'Delhi'} Central Delivery Hub`;
 
-          await notificationRepository.create({
-            rider_id: riderId,
-            type: 'bgv_cleared',
-            channel: 'whatsapp',
-            title: 'BGV Cleared Successfully!',
-            body: `Mubarak ho! Aapka Background Verification clear ho gaya hai. Worker ID: ${workerCode}`,
-            payload: { worker_code: workerCode },
-          });
+        const tlName = (rider && rider.assigned_tl_name)
+          ? rider.assigned_tl_name
+          : adminName;
 
-          console.log(`[2][BGV] BGV cleared and Onboarded - riderId: ${riderId}, workerCode: ${workerCode}`);
-        } else {
-          await riderRepository.updateById(riderId, {
-            bgv_status: 'cleared',
-            onboarding_stage: 'bgv_cleared',
-          });
+        const tlPhone = (rider && rider.assigned_tl_phone)
+          ? rider.assigned_tl_phone
+          : '+91 98300 00001';
 
-          await notificationRepository.create({
-            rider_id: riderId,
-            type: 'bgv_cleared',
-            channel: 'whatsapp',
-            title: 'BGV Cleared Successfully!',
-            body: `Mubarak ho! Aapka Background Verification clear ho gaya hai. Kripya apne bache hue documents verification ke liye submit karein.`,
-          });
+        await riderRepository.updateById(riderId, {
+          bgv_status: 'cleared',
+          onboarding_stage: 'onboarded',
+          glam_worker_code: workerCode,
+          assigned_hub_name: hubName,
+          assigned_tl_name: tlName,
+          assigned_tl_phone: tlPhone,
+        });
 
-          console.log(`[2][BGV] BGV cleared (waiting for documents) - riderId: ${riderId}, approvedDocs: ${approvedCount}/6`);
-        }
+        await notificationRepository.create({
+          rider_id: riderId,
+          type: 'bgv_cleared',
+          channel: 'whatsapp',
+          title: 'BGV Cleared Successfully!',
+          body: `Mubarak ho! Aapka Background Verification clear ho gaya hai. Worker ID: ${workerCode}`,
+          payload: { worker_code: workerCode },
+        });
+
+        console.log(`[2][BGV] BGV cleared and Onboarded - riderId: ${riderId}, TL: ${tlName}, Hub: ${hubName}, workerCode: ${workerCode}`);
 
       } else if (status === 'rejected') {
         await riderRepository.updateById(riderId, { bgv_status: 'rejected' });

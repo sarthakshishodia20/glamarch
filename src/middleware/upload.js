@@ -36,13 +36,13 @@ if (isCloudinaryConfigured) {
     cloudinary,
     params: (req, file) => {
       const docType = req.body.document_type || 'misc';
-      const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
+      const ext = path.extname(file.originalname || '').toLowerCase().replace('.', '');
+      const isPdf = ext === 'pdf' || (file.mimetype && file.mimetype.includes('pdf'));
       return {
-        folder: `glam-onboarding/${docType}`,  // Cloudinary mein folder structure
+        folder: `glam-onboarding/${docType}`,
         public_id: `${docType}_${randomUUID()}`,
-        resource_type: 'auto',                  // image aur PDF dono handle karo
-        format: ext === 'pdf' ? 'pdf' : undefined,
-        allowed_formats: ['jpg', 'jpeg', 'png', 'pdf'],
+        resource_type: isPdf ? 'auto' : 'image',
+        format: ext || undefined,
       };
     },
   });
@@ -62,9 +62,25 @@ if (isCloudinaryConfigured) {
 }
 
 const fileFilter = (req, file, cb) => {
-  const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-  if (allowed.includes(file.mimetype)) cb(null, true);
-  else cb(new ApiError(400, 'Invalid file type. Only JPG, PNG, PDF allowed.'), false);
+  const allowedMimes = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'application/pdf',
+    'application/x-pdf',
+    'application/acrobat',
+    'applications/vnd.pdf',
+    'text/pdf',
+    'application/octet-stream',
+  ];
+  const allowedExts = ['.jpg', '.jpeg', '.png', '.pdf'];
+  const ext = path.extname(file.originalname || '').toLowerCase();
+
+  if (allowedExts.includes(ext) || allowedMimes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new ApiError(400, 'Invalid file type. Only JPG, PNG, PDF allowed.'), false);
+  }
 };
 
 const upload = multer({

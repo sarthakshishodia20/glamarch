@@ -4,6 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'config/constants.dart';
 import 'screens/splash_screen.dart';
 import 'screens/language_selection_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/client_select_screen.dart';
+import 'screens/document_center_screen.dart';
+import 'screens/selfie_bgv_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +40,15 @@ class GlamRiderApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      // Splash screen is the entry point — auto-navigates to language selection
+      // Splash screen is the entry point — auto-navigates based on saved onboarding state
       home: const SplashScreen(),
-      // Named routes — will add more screens here as we build them
       routes: {
         '/language': (context) => const LanguageSelectionScreen(),
-        // '/register': (context) => const RegisterScreen(),  // Screen 2 coming next
+        '/register': (context) => const RegisterScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/select-client': (context) => const ClientSelectScreen(),
+        '/documents': (context) => const DocumentCenterScreen(),
+        '/selfie-bgv': (context) => const SelfieBgvScreen(),
       },
     );
   }

@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../config/constants.dart';
-import 'language_selection_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -59,20 +61,66 @@ class _SplashScreenState extends State<SplashScreen>
     // Start animation
     _controller.forward();
 
-    // Navigate to Language Selection after 2.5 seconds
-    Future.delayed(const Duration(milliseconds: 2500), () {
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const LanguageSelectionScreen(),
-          transitionsBuilder: (_, anim, __, child) => FadeTransition(
-            opacity: anim,
-            child: child,
-          ),
-          transitionDuration: const Duration(milliseconds: 500),
-        ),
-      );
-    });
+    // Check existing session token & navigate accordingly
+    _checkSessionAndNavigate();
+  }
+
+  Future<void> _checkSessionAndNavigate() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
+    if (!mounted) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    final token = prefs.getString('token');
+
+    String targetRoute = '/language';
+
+    if (token != null && token.isNotEmpty) {
+      targetRoute = '/select-client';
+      try {
+        final res = await http.get(
+          Uri.parse('${AppConstants.apiBaseUrl}/documents/status'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        );
+        if (res.statusCode == 200) {
+          final data = jsonDecode(res.body)['data'];
+          if (data != null && data['checklist'] is List) {
+            final List checklist = data['checklist'];
+            bool selfieUploaded = false;
+            int docsUploadedCount = 0;
+
+            for (var item in checklist) {
+              if (item['is_uploaded'] == true) {
+                if (item['document_type'] == 'selfie') {
+                  selfieUploaded = true;
+                } else {
+                  docsUploadedCount++;
+                }
+              }
+            }
+
+            if (selfieUploaded) {
+              targetRoute = '/selfie-bgv';
+            } else if (docsUploadedCount > 0) {
+              targetRoute = '/documents';
+            } else {
+              targetRoute = '/select-client';
+            }
+          }
+        } else if (res.statusCode == 401) {
+          await prefs.clear();
+          targetRoute = '/language';
+        }
+      } catch (_) {
+        targetRoute = '/select-client';
+      }
+    }
+
+    if (!mounted) return;
+    Navigator.pushNamedAndRemoveUntil(context, targetRoute, (route) => false);
   }
 
   @override
