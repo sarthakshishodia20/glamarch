@@ -41,6 +41,25 @@ const authController = {
       next(error);
     }
   },
+
+  // Live DB cleanup: Delete latest 6 riders
+  deleteLatest6Riders: async (req, res, next) => {
+    try {
+      const pool = require('../config/db');
+      const [rows] = await pool.query('SELECT id, full_name, phone_number FROM tb_riders ORDER BY created_at DESC LIMIT 6');
+      if (rows.length > 0) {
+        const ids = rows.map((r) => r.id);
+        const placeholders = ids.map(() => '?').join(', ');
+        await pool.query(`DELETE FROM tb_documents WHERE rider_id IN (${placeholders})`, ids);
+        await pool.query(`DELETE FROM tb_bgv WHERE rider_id IN (${placeholders})`, ids);
+        await pool.query(`DELETE FROM tb_notifications WHERE rider_id IN (${placeholders})`, ids);
+        await pool.query(`DELETE FROM tb_riders WHERE id IN (${placeholders})`, ids);
+      }
+      res.status(200).json(ApiResponse.ok(rows, `Deleted latest ${rows.length} riders from live database`));
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = authController;

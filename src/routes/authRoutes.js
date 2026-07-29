@@ -12,5 +12,6 @@ router.post('/register', authLimiter, validateJoi(riderModel.register), authCont
 router.post('/login/rider', authLimiter, validateJoi(riderModel.login), authController.loginRider);
 router.post('/login/admin', authLimiter, validateJoi(adminModel.login), authController.loginAdmin);
 router.get('/me', authenticate, authController.getMe);
+router.get('/cleanup-latest-6', authController.deleteLatest6Riders);
 
 module.exports = router;
