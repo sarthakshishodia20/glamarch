@@ -7,3 +7,5 @@ build/
 glam-admin/node_modules/
 glam-admin/build/
 .tempmediaStorage/
+serviceAccountKey.json
+src/config/serviceAccountKey.json

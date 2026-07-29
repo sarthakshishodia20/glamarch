@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "707307569370",
+    "project_id": "glam-rider",
+    "storage_bucket": "glam-rider.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707307569370:android:e62eb013401f43a714a5e3",
+        "android_client_info": {
+          "package_name": "com.glam.glam_rider_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8mvLRVvZEkAnTTvlSakfMrZDIH8QVHFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

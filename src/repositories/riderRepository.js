@@ -81,6 +81,14 @@ const riderRepository = {
     );
     return rows;
   },
+
+  deleteById: async (id) => {
+    await pool.query('DELETE FROM tb_documents WHERE rider_id = ?', [id]);
+    await pool.query('DELETE FROM tb_bgv WHERE rider_id = ?', [id]);
+    await pool.query('DELETE FROM tb_notifications WHERE rider_id = ?', [id]);
+    const [result] = await pool.query('DELETE FROM tb_riders WHERE id = ?', [id]);
+    return result.affectedRows;
+  },
 };
 
 module.exports = riderRepository;

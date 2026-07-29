@@ -112,6 +112,25 @@ const riderService = {
     console.log(`[3][RIDER] Rider updated - ${rider.full_name}`);
     return await riderRepository.findById(riderId);
   },
+
+  deleteRiderByAdmin: async (riderId) => {
+    console.log(`[3][RIDER] Admin - rider delete | riderId: ${riderId}`);
+    const rider = await riderRepository.findById(riderId);
+    if (!rider) throw ApiError.notFound('Rider account nahi mila');
+
+    await riderRepository.deleteById(riderId);
+    console.log(`[3][RIDER] Rider deleted - ${rider.full_name}`);
+    return { id: riderId, full_name: rider.full_name };
+  },
+
+  updateFcmToken: async (riderId, fcmToken) => {
+    console.log(`[3][RIDER] FCM Token update | riderId: ${riderId}`);
+    const rider = await riderRepository.findById(riderId);
+    if (!rider) throw ApiError.notFound('Rider account nahi mila');
+
+    await riderRepository.updateById(riderId, { fcm_token: fcmToken });
+    return { id: riderId, fcm_token: fcmToken };
+  },
 };
 
 module.exports = riderService;

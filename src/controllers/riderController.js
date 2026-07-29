@@ -84,6 +84,29 @@ const riderController = {
       next(error);
     }
   },
+
+  // Admin Side: Delete single rider
+  deleteRiderByAdmin: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const result = await riderService.deleteRiderByAdmin(id);
+      res.status(200).json(ApiResponse.ok(result, 'Rider delete ho gaya successfully'));
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Save rider FCM Token for push notifications
+  updateFcmToken: async (req, res, next) => {
+    try {
+      const { fcm_token } = req.body;
+      if (!fcm_token) throw ApiError.badRequest('fcm_token is required');
+      const result = await riderService.updateFcmToken(req.user.id, fcm_token);
+      res.status(200).json(ApiResponse.ok(result, 'FCM token saved successfully'));
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = riderController;

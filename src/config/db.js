@@ -15,8 +15,19 @@ const pool = mysql.createPool({
 });
 
 pool.getConnection()
-  .then(connection => {
+  .then(async (connection) => {
     console.log('MySQL connected successfully to database:', process.env.DB_NAME);
+    
+    // Auto-migrate: Add fcm_token column if it doesn't exist
+    try {
+      await connection.query('ALTER TABLE tb_riders ADD COLUMN fcm_token TEXT NULL');
+      console.log('Auto-migration: fcm_token column added successfully!');
+    } catch (e) {
+      if (e.code !== 'ER_DUP_FIELDNAME') {
+        console.warn('Auto-migration skipped or failed:', e.message);
+      }
+    }
+    
     connection.release();
   })
   .catch(err => {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/constants.dart';
+import 'services/fcm_service.dart';
 import 'screens/splash_screen.dart';
 import 'screens/language_selection_screen.dart';
 import 'screens/register_screen.dart';
@@ -10,7 +11,7 @@ import 'screens/client_select_screen.dart';
 import 'screens/document_center_screen.dart';
 import 'screens/selfie_bgv_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Force portrait mode only — rider app is portrait
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -21,6 +22,10 @@ void main() {
       statusBarIconBrightness: Brightness.light,
     ),
   );
+
+  // Initialize Firebase Cloud Messaging
+  await FcmService().init();
+
   runApp(const GlamRiderApp());
 }
 

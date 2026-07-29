@@ -99,9 +99,21 @@ const bgvService = {
           payload: { worker_code: workerCode },
         });
 
+        // Send Push Notification if FCM Token exists
+        if (rider && rider.fcm_token) {
+          const firebaseService = require('./firebaseService');
+          await firebaseService.sendPushNotification({
+            fcmToken: rider.fcm_token,
+            title: '🎉 BGV Cleared Successfully!',
+            body: `Mubarak ho ${rider.full_name}! Aapka Background Verification clear ho gaya hai. Worker ID: ${workerCode}`,
+            data: { type: 'bgv_cleared', worker_code: workerCode },
+          });
+        }
+
         console.log(`[2][BGV] BGV cleared and Onboarded - riderId: ${riderId}, TL: ${tlName}, Hub: ${hubName}, workerCode: ${workerCode}`);
 
       } else if (status === 'rejected') {
+        const rider = await riderRepository.findById(riderId);
         await riderRepository.updateById(riderId, { bgv_status: 'rejected' });
 
         await notificationRepository.create({
@@ -111,6 +123,16 @@ const bgvService = {
           title: 'BGV Update',
           body: `Verification status update: ${rejection_reason || 'Document verification query.'}`,
         });
+
+        if (rider && rider.fcm_token) {
+          const firebaseService = require('./firebaseService');
+          await firebaseService.sendPushNotification({
+            fcmToken: rider.fcm_token,
+            title: '⚠️ BGV Status Update',
+            body: `Verification status update: ${rejection_reason || 'Please check your documents.'}`,
+            data: { type: 'bgv_rejected', reason: rejection_reason || '' },
+          });
+        }
 
         console.log(`[2][BGV] BGV rejected - riderId: ${riderId}, reason: ${rejection_reason}`);
       }

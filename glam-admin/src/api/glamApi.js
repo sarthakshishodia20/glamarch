@@ -15,6 +15,9 @@ export const getFunnelStats = () => api.get('/riders/admin/funnel');
 export const updateRider = (id, data) =>
   api.patch(`/riders/admin/riders/${id}`, data);
 
+export const deleteRider = (id) =>
+  api.delete(`/riders/admin/riders/${id}`);
+
 export const bulkUploadRiders = (formData) =>
   api.post('/riders/admin/bulk-upload/riders', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

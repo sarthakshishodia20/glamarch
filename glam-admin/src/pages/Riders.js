@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { getAllRiders, updateRider, getRiderDocumentStatus, verifyRiderDocument } from '../api/glamApi';
+import { getAllRiders, updateRider, deleteRider, getRiderDocumentStatus, verifyRiderDocument } from '../api/glamApi';
 import { useToast } from '../context/ToastContext';
 import Loader from '../components/Loader';
 import '../pages/Dashboard.css';
@@ -35,6 +35,7 @@ const Riders = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deletingId, setDeletingId] = useState(null);
 
   // Filters
   const [stageFilter, setStageFilter] = useState('');
@@ -48,6 +49,23 @@ const Riders = () => {
 
   // Document Verification Modal
   const [docsModal, setDocsModal] = useState({ open: false, rider: null, loading: false, checklist: [] });
+
+  const handleDeleteRider = async (rider) => {
+    if (!window.confirm(`Kya aap "${rider.full_name}" rider ko permanently delete karna chahte hain?`)) {
+      return;
+    }
+    setDeletingId(rider.id);
+    try {
+      await deleteRider(rider.id);
+      showToast(`Rider "${rider.full_name}" successfully delete ho gaya.`, 'success');
+      fetchRiders();
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Rider delete karne mein error aaya.';
+      showToast(msg, 'error');
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const openDocsModal = async (rider) => {
     setDocsModal({ open: true, rider, loading: true, checklist: [] });
@@ -254,6 +272,13 @@ const Riders = () => {
                             </button>
                             <button className="btn btn-secondary btn-sm" onClick={() => openDocsModal(rider)}>
                               Docs
+                            </button>
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={() => handleDeleteRider(rider)}
+                              disabled={deletingId === rider.id}
+                            >
+                              {deletingId === rider.id ? 'Deleting...' : 'Delete'}
                             </button>
                           </div>
                         </td>

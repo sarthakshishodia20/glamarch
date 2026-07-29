@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS tb_riders (
   assigned_tl_phone  VARCHAR(15)   DEFAULT NULL,
   onboarding_stage   ENUM('registered', 'documents_pending', 'documents_submitted', 'bgv_pending', 'bgv_cleared', 'onboarded', 'live') NOT NULL DEFAULT 'registered',
   bgv_status         ENUM('not_started', 'triggered', 'in_progress', 'cleared', 'rejected') NOT NULL DEFAULT 'not_started',
+  fcm_token          VARCHAR(500) DEFAULT NULL,
   is_live            TINYINT(1)   NOT NULL DEFAULT 0,
   created_at         TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at         TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
